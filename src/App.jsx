@@ -1,4 +1,6 @@
 import "./App.css";
+import TodoList from "./TodoList";
+import AddTodoForm from "./AddTodoForm";
 
 const todoList = [
   {
@@ -18,6 +20,8 @@ function App() {
   return (
     <>
       <h1>Todo List</h1>
+      <AddTodoForm />
+      <TodoList />
       <div className="card">
         <ul>
           {todoList.map((item) => (
