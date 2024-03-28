@@ -21,6 +21,8 @@ function TodoList() {
       <ul>
         {todoList.map((todo) => (
           <TodoListItem key={todo.id} todo={todo} />
+        {todoList.map((item) => (
+          <li key={item.id}>{item.title}</li>
         ))}
       </ul>
     </div>
