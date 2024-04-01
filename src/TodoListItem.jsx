@@ -1,7 +1,8 @@
-function TodoListItem(props) {
+// eslint-disable-next-line react/prop-types
+function TodoListItem({ todo }) {
   return (
     // eslint-disable-next-line react/prop-types
-    <li>{props.todo.title}</li>
+    <li>{todo.title}</li>
   );
 }
 

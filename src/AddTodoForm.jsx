@@ -1,16 +1,32 @@
-function AddTodoForm(props) {
+import { useState } from "react";
+
+// eslint-disable-next-line react/prop-types
+function AddTodoForm({ onAddTodo }) {
+  const [todoTitle, setTodoTitle] = useState("");
+
+  const handleTitleChange = (event) => {
+    const newTodoTitle = event.target.value;
+    setTodoTitle(newTodoTitle);
+  };
+
   const handleAddTodo = (event) => {
     event.preventDefault();
-    const todoTitle = event.target.elements.title.value;
     // eslint-disable-next-line react/prop-types
-    props.onAddTodo(todoTitle);
+    onAddTodo({ title: todoTitle, id: Date.now() });
     console.log(todoTitle);
-    event.target.reset();
+    setTodoTitle("");
   };
+
   return (
     <form onSubmit={handleAddTodo}>
       <label htmlFor="todoTitle">Title</label>
-      <input id="todoTitle" name="title" placeholder="Type here"></input>
+      <input
+        id="todoTitle"
+        value={todoTitle}
+        onChange={handleTitleChange}
+        name="title"
+        placeholder="Type here"
+      ></input>
       <button>Add</button>
     </form>
   );
