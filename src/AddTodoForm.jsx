@@ -11,7 +11,6 @@ function AddTodoForm({ onAddTodo }) {
 
   const handleAddTodo = (event) => {
     event.preventDefault();
-    // eslint-disable-next-line react/prop-types
     onAddTodo({ title: todoTitle, id: Date.now() });
     console.log(todoTitle);
     setTodoTitle("");
@@ -26,7 +25,7 @@ function AddTodoForm({ onAddTodo }) {
         onChange={handleTitleChange}
         name="title"
         placeholder="Type here"
-      ></input>
+      />
       <button>Add</button>
     </form>
   );

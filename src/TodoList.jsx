@@ -1,8 +1,7 @@
 import TodoListItem from "./TodoListItem";
 
-function TodoList(props) {
-  // eslint-disable-next-line react/prop-types
-  const { todoList } = props;
+// eslint-disable-next-line react/prop-types
+function TodoList({ todoList }) {
   return (
     <div className="card">
       <ul>
