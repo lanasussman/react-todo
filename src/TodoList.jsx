@@ -1,24 +1,11 @@
 import TodoListItem from "./TodoListItem";
 
-const todoList = [
-  {
-    id: 1,
-    title: "Review test cases for the new feature",
-  },
-  {
-    id: 2,
-    title: "Conduct regression testing on the latest build",
-  },
-  {
-    id: 3,
-    title: "Retest fixed bugs",
-  },
-];
-
-function TodoList() {
+// eslint-disable-next-line react/prop-types
+function TodoList({ todoList }) {
   return (
     <div className="card">
       <ul>
+        {/* eslint-disable-next-line react/prop-types */}
         {todoList.map((todo) => (
           <TodoListItem key={todo.id} todo={todo} />
         ))}
