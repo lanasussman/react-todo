@@ -1,4 +1,5 @@
 import { useState } from "react";
+import InputWithLabel from "./InputWithLabel";
 
 // eslint-disable-next-line react/prop-types
 function AddTodoForm({ onAddTodo }) {
@@ -18,14 +19,9 @@ function AddTodoForm({ onAddTodo }) {
 
   return (
     <form onSubmit={handleAddTodo}>
-      <label htmlFor="todoTitle">Title</label>
-      <input
-        id="todoTitle"
-        value={todoTitle}
-        onChange={handleTitleChange}
-        name="title"
-        placeholder="Type here"
-      />
+      <InputWithLabel value={todoTitle} onChange={handleTitleChange}>
+        Title
+      </InputWithLabel>
       <button>Add</button>
     </form>
   );

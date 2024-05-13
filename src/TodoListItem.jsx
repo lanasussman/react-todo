@@ -1,8 +1,14 @@
 // eslint-disable-next-line react/prop-types
-function TodoListItem({ todo }) {
+function TodoListItem({ todo, onRemoveTodo }) {
   return (
-    // eslint-disable-next-line react/prop-types
-    <li>{todo.title}</li>
+    <li>
+      {/* eslint-disable-next-line react/prop-types */}
+      {todo.title}
+      {/* eslint-disable-next-line react/prop-types */}
+      <button type="button" onClick={() => onRemoveTodo(todo.id)}>
+        Remove
+      </button>
+    </li>
   );
 }
 
