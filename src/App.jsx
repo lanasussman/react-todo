@@ -3,25 +3,42 @@ import TodoList from "./TodoList";
 import AddTodoForm from "./AddTodoForm";
 import { useEffect, useState } from "react";
 
-function useSemiPersistentState() {
+function App() {
   const [todoList, setTodoList] = useState(() => {
     const savedTodoList = localStorage.getItem("savedTodoList");
     return savedTodoList ? JSON.parse(savedTodoList) : [];
   });
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // eslint-disable-next-line no-unused-vars
+    const promise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve({
+          data: {
+            todoList: todoList,
+          },
+        });
+      }, 2000);
+    });
+
+    promise.then((result) => {
+      setTodoList(result.data.todoList);
+      setIsLoading(false);
+    });
+  }, [todoList]);
 
   const removeTodo = (id) => {
     setTodoList(todoList.filter((todo) => todo.id !== id));
   };
 
   useEffect(() => {
-    localStorage.setItem("savedTodoList", JSON.stringify(todoList));
-  }, [todoList]);
+    if (!isLoading) {
+      localStorage.setItem("savedTodoList", JSON.stringify(todoList));
+    }
+  }, [todoList, isLoading]);
 
-  return [todoList, setTodoList, removeTodo];
-}
-
-function App() {
-  const [todoList, setTodoList, removeTodo] = useSemiPersistentState();
   const addTodo = (newTodo) => {
     setTodoList([...todoList, newTodo]);
   };
@@ -29,8 +46,14 @@ function App() {
   return (
     <>
       <h1>Todo List</h1>
-      <AddTodoForm onAddTodo={addTodo} />
-      <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          <AddTodoForm onAddTodo={addTodo} />
+          <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
+        </>
+      )}
     </>
   );
 }
