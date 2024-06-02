@@ -45,8 +45,42 @@ function App() {
     fetchData();
   }, []);
 
-  const removeTodo = (id) => {
-    setTodoList(todoList.filter((todo) => todo.id !== id));
+  const deleteTodoFromAirtable = async (id) => {
+    const url = `https://api.airtable.com/v0/${
+      import.meta.env.VITE_AIRTABLE_BASE_ID
+    }/${import.meta.env.VITE_TABLE_NAME}/${id}`;
+    try {
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`,
+        },
+      });
+
+      if (!response.ok) {
+        const message = `Error has ocurred: ${response.status}`;
+        throw new Error(message);
+      }
+
+      return true;
+    } catch (error) {
+      console.log(error.message);
+      return false;
+    }
+  };
+
+  const removeTodo = async (id) => {
+    const isDeleted = await deleteTodoFromAirtable(id);
+    if (isDeleted) {
+      setTodoList((todoList) => {
+        const updatedTodoList = todoList.filter((todo) => todo.id !== id);
+        localStorage.setItem("savedTodoList", JSON.stringify(updatedTodoList));
+        return updatedTodoList;
+      });
+    } else {
+      console.log("Failed to delete todo from Airtable");
+    }
   };
 
   useEffect(() => {
