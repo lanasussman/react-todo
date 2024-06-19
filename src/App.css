@@ -10,5 +10,8 @@ ul {
 }
 
 label {
-  padding: 1em;;
+  padding: 1em;
+  color: #ffffff;
+  font-size: 2rem;
+  font-weight: bold;
 }
