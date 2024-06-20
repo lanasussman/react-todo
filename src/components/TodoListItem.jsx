@@ -1,4 +1,6 @@
 import styles from "./TodoListItem.module.css"; 
+import PropTypes from "prop-types";
+
 // eslint-disable-next-line react/prop-types
 function TodoListItem({ todo, onRemoveTodo }) {
   return (
@@ -12,5 +14,9 @@ function TodoListItem({ todo, onRemoveTodo }) {
     </li>
   );
 }
+
+TodoListItem.propTypes = {
+  onAddTodo: PropTypes.func,
+};
 
 export default TodoListItem;

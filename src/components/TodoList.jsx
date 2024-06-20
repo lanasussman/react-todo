@@ -1,4 +1,5 @@
 import TodoListItem from "./TodoListItem";
+import PropTypes from "prop-types";
 
 // eslint-disable-next-line react/prop-types
 function TodoList({ todoList, onRemoveTodo }) {
@@ -13,5 +14,9 @@ function TodoList({ todoList, onRemoveTodo }) {
     </div>
   );
 }
+
+TodoList.propTypes = {
+  onAddTodo: PropTypes.func,
+};
 
 export default TodoList;
