@@ -1,5 +1,6 @@
 import { useState } from "react";
 import InputWithLabel from "./InputWithLabel";
+import PropTypes from "prop-types";
 
 // eslint-disable-next-line react/prop-types
 function AddTodoForm({ onAddTodo }) {
@@ -26,5 +27,9 @@ function AddTodoForm({ onAddTodo }) {
     </form>
   );
 }
+
+AddTodoForm.propTypes = {
+  onAddTodo: PropTypes.func,
+};
 
 export default AddTodoForm;
