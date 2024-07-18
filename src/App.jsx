@@ -1,7 +1,7 @@
 import "./App.css";
 import TodoList from "./components/TodoList";
 import AddTodoForm from "./components/AddTodoForm";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -11,8 +11,13 @@ function App() {
   });
 
   const [isLoading, setIsLoading] = useState(true);
+  const [sortOrder, setSortOrder] = useState({
+    createdDate: "asc",
+    title: "asc",
+  });
+  const [sortField, setSortField] = useState("createdDate");
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     const options = {
       method: "GET",
       headers: {
@@ -21,7 +26,9 @@ function App() {
     };
     const url = `https://api.airtable.com/v0/${
       import.meta.env.VITE_AIRTABLE_BASE_ID
-    }/${import.meta.env.VITE_TABLE_NAME}`;
+    }/${
+      import.meta.env.VITE_TABLE_NAME
+    }?view=Grid%20view`;
 
     try {
       const response = await fetch(url, options);
@@ -34,17 +41,38 @@ function App() {
       const todos = data.records.map((record) => ({
         id: record.id,
         title: record.fields.title,
+        createdDate: record.createdTime,
       }));
+
+      todos.sort((a, b) => {
+        if (sortField === "title") {
+          return sortOrder[sortField] === "asc"
+            ? a.title.localeCompare(b.title)
+            : b.title.localeCompare(a.title);
+        } else {
+          return sortOrder[sortField] === "asc"
+            ? new Date(a.createdDate) - new Date(b.createdDate)
+            : new Date(b.createdDate) - new Date(a.createdDate);
+        }
+      });
+
       setTodoList(todos);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
     }
-  };
+  }, [sortField, sortOrder]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
+
+  const toggleSortOrder = (field) => {
+    setSortOrder((prevSortOrder) => ({
+      ...prevSortOrder,
+      [field]: prevSortOrder[field] === "asc" ? "desc" : "asc",
+    }));
+  };
 
   const deleteTodoFromAirtable = async (id) => {
     const url = `https://api.airtable.com/v0/${
@@ -133,8 +161,23 @@ function App() {
       const todo = {
         id: addedTodo.id,
         title: addedTodo.fields.title,
+        createdDate: addedTodo.createdTime,
       };
-      setTodoList([...todoList, todo]);
+      setTodoList((prevTodoList) => {
+        const updatedList = [...prevTodoList, todo].sort((a, b) => {
+          if (sortField === "title") {
+            return sortOrder.title === "asc"
+              ? a.title.localeCompare(b.title)
+              : b.title.localeCompare(a.title);
+          } else {
+            return sortOrder.createdDate === "asc"
+              ? new Date(a.createdDate) - new Date(b.createdDate)
+              : new Date(b.createdDate) - new Date(a.createdDate);
+          }
+        });
+        localStorage.setItem("savedTodoList", JSON.stringify(updatedList));
+        return updatedList;
+      });
     }
   };
 
@@ -146,6 +189,23 @@ function App() {
           element={
             <>
               <h1>Todo List</h1>
+              <button
+                onClick={() => {
+                  toggleSortOrder("createdDate");
+                  setSortField("createdDate");
+                }}
+              >
+                Sort by Created Date (
+                {sortOrder.createdDate === "asc" ? "↑" : "↓"})
+              </button>
+              <button
+                onClick={() => {
+                  toggleSortOrder("title");
+                  setSortField("title");
+                }}
+              >
+                Sort by Title ({sortOrder.title === "asc" ? "↑" : "↓"})
+              </button>
               {isLoading ? (
                 <p>Loading...</p>
               ) : (
