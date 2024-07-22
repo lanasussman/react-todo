@@ -17,7 +17,7 @@ function App() {
   });
   const [sortField, setSortField] = useState("createdDate");
 
-  const fetchData = useCallback(async () => {
+  const fetchData = async () => {
     const options = {
       method: "GET",
       headers: {
@@ -26,9 +26,7 @@ function App() {
     };
     const url = `https://api.airtable.com/v0/${
       import.meta.env.VITE_AIRTABLE_BASE_ID
-    }/${
-      import.meta.env.VITE_TABLE_NAME
-    }?view=Grid%20view`;
+    }/${import.meta.env.VITE_TABLE_NAME}?view=Grid%20view`;
 
     try {
       const response = await fetch(url, options);
@@ -44,28 +42,30 @@ function App() {
         createdDate: record.createdTime,
       }));
 
-      todos.sort((a, b) => {
-        if (sortField === "title") {
-          return sortOrder[sortField] === "asc"
-            ? a.title.localeCompare(b.title)
-            : b.title.localeCompare(a.title);
-        } else {
-          return sortOrder[sortField] === "asc"
-            ? new Date(a.createdDate) - new Date(b.createdDate)
-            : new Date(b.createdDate) - new Date(a.createdDate);
-        }
-      });
-
       setTodoList(todos);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
     }
-  }, [sortField, sortOrder]);
+  };
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, []);
+
+  const sortTodos = useCallback(() => {
+    return [...todoList].sort((a, b) => {
+      if (sortField === "title") {
+        return sortOrder[sortField] === "asc"
+          ? a.title.localeCompare(b.title)
+          : b.title.localeCompare(a.title);
+      } else {
+        return sortOrder[sortField] === "asc"
+          ? new Date(a.createdDate) - new Date(b.createdDate)
+          : new Date(b.createdDate) - new Date(a.createdDate);
+      }
+    });
+  }, [todoList, sortField, sortOrder]);
 
   const toggleSortOrder = (field) => {
     setSortOrder((prevSortOrder) => ({
@@ -211,7 +211,7 @@ function App() {
               ) : (
                 <>
                   <AddTodoForm onAddTodo={addTodo} />
-                  <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
+                  <TodoList todoList={sortTodos()} onRemoveTodo={removeTodo} />
                 </>
               )}
             </>

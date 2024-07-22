@@ -1,18 +1,14 @@
-/* eslint-disable react/prop-types */
-import styles from "./TodoListItem.module.css"; 
+import styles from "./TodoListItem.module.css";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
-// eslint-disable-next-line react/prop-types
 function TodoListItem({ todo, onRemoveTodo }) {
   return (
     <li className={styles.ListItem}>
       <div>
-        {/* eslint-disable-next-line react/prop-types */}
         {todo.title}
         <br />
-        {/* eslint-disable-next-line react/prop-types */}
         {new Date(todo.createdDate).toLocaleString()}
       </div>
       <button

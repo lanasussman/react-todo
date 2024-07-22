@@ -2,7 +2,6 @@ import { useState } from "react";
 import InputWithLabel from "./InputWithLabel";
 import PropTypes from "prop-types";
 
-// eslint-disable-next-line react/prop-types
 function AddTodoForm({ onAddTodo }) {
   const [todoTitle, setTodoTitle] = useState("");
 
