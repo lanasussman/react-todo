@@ -3,6 +3,7 @@ import TodoList from "./components/TodoList";
 import AddTodoForm from "./components/AddTodoForm";
 import { useEffect, useState, useCallback } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navigation from "./components/Navigation";
 
 function App() {
   const [todoList, setTodoList] = useState(() => {
@@ -183,6 +184,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <Navigation />
       <Routes>
         <Route
           path="/"
