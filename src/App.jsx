@@ -187,7 +187,7 @@ function App() {
       <Navigation />
       <Routes>
         <Route
-          path="/"
+          path="/home"
           element={
             <>
               <h1>Todo List</h1>
