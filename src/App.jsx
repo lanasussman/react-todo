@@ -2,7 +2,7 @@ import "./App.css";
 import TodoList from "./components/TodoList";
 import AddTodoForm from "./components/AddTodoForm";
 import { useEffect, useState, useCallback } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Navigation from "./components/Navigation";
 
 function App() {
@@ -186,6 +186,7 @@ function App() {
     <BrowserRouter>
       <Navigation />
       <Routes>
+        <Route path="/" element={<Navigate replace to="/home" />} />
         <Route
           path="/home"
           element={
