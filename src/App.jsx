@@ -183,7 +183,7 @@ function App() {
   };
 
   return (
-    <BrowserRouter basename="/react-todo">
+    <BrowserRouter>
       <Navigation />
       <Routes>
         <Route
