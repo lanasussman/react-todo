@@ -7,12 +7,19 @@ const Navigation = () => {
     <nav className="nav">
       <ul>
         <li>
-          <NavLink exact to="/" activeClassName="active">
+          <NavLink
+            exact
+            to="/"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
             Home
           </NavLink>
         </li>
         <li>
-          <NavLink to="/new" activeClassName="active">
+          <NavLink
+            to="/new"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
             New Todo List
           </NavLink>
         </li>
